@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<title>대덕특구 센터 지도</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    display: flex;
+  }
+  .map-container {
+    position: relative;
+    display: inline-block;
+  }
+  .marker {
+    position: absolute;
+    width: 22px;
+    height: 22px;
+    background: red;
+    border-radius: 50%;
+    border: 2px solid white;
+    cursor: pointer;
+    box-shadow: 0 0 5px rgba(0,0,0,0.4);
+    transition: transform 0.2s;
+  }
+  .marker:hover {
+    transform: scale(1.2);
+  }
+  .tooltip {
+    display: none;
+    position: absolute;
+    background: white;
+    border: 1px solid #ccc;
+    padding: 8px;
+    border-radius: 6px;
+    font-size: 13px;
+    white-space: nowrap;
+    z-index: 100;
+    box-shadow: 0 0 8px rgba(0,0,0,0.2);
+  }
+  #details {
+    margin-left: 30px;
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    width: 250px;
+    height: 300px;
+    overflow: auto;
+  }
+  #details h3 {
+    margin-top: 0;
+  }
+  .company-link {
+    color: blue;
+    text-decoration: underline;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<div class="map-container">
+  <!-- 배경 그림 (네가 만든 그림 파일) -->
+  <img src="daedeok_map.png" alt="대덕특구 센터 지도" style="max-width:100%;">
+
+  <!-- 센터 마커들 -->
+  <div class="marker" style="top:280px; left:210px; background:red;"
+       onmouseover="showTooltip(event, '사이언스센터', ['페리지','나라스페이스','두타기술'])"
+       onclick="toggleTooltip(event, '사이언스센터', ['페리지','나라스페이스','두타기술'])"></div>
+
+  <div class="marker" style="top:300px; left:500px; background:blue;"
+       onmouseover="showTooltip(event, '대덕테크비즈센터', ['네오스펙','비츠로'])"
+       onclick="toggleTooltip(event, '대덕테크비즈센터', ['네오스펙','비츠로'])"></div>
+
+  <!-- 툴팁 -->
+  <div id="tooltip" class="tooltip"
+       onmouseover="keepTooltip()" 
+       onmouseout="hideTooltip()"></div>
+</div>
+
+<!-- 상세 정보 영역 -->
+<div id="details">
+  <h3>기업 상세 정보</h3>
+  <p>마커 → 기업 클릭 시 이곳에 상세 내용 표시</p>
+</div>
+
+<script>
+  const tooltip = document.getElementById("tooltip");
+  const details = document.getElementById("details");
+
+  // 샘플 기업 상세정보 데이터
+  const companyData = {
+    "페리지": { desc: "발사체 전문기업", url: "https://www.perigee.space", contact: "042-123-4567" },
+    "나라스페이스": { desc: "소형위성전문기업", url: "https://www.naraspace.com/ko", contact: "042-987-6543" },
+    "두타기술": { desc: "우주부품 제조업체", url: "https://www.duta-rnd.com", contact: "042-555-7777" },
+    "네오스펙": { desc: "드론 센서 개발기업", url: "http://www.neospec.kr", contact: "02-111-2222" },
+    "비츠로": { desc: "에너지 소재 기업", url: "http://www.vitzronextech.com", contact: "031-999-8888" }
+  };
+
+  let tooltipLock = false;
+
+  function buildTooltip(centerName, companies) {
+    let html = `<strong>${centerName}</strong><br>`;
+    companies.forEach(c => {
+      html += `<span class='company-link' onclick='showDetails("${c}")'>${c}</span><br>`;
+    });
+    tooltip.innerHTML = html;
+  }
+
+  function showTooltip(e, centerName, companies) {
+    if (tooltipLock) return; // 고정 상태면 무시
+    buildTooltip(centerName, companies);
+    tooltip.style.display = "block";
+    tooltip.style.left = (e.pageX + 10) + "px";
+    tooltip.style.top = (e.pageY - 20) + "px";
+  }
+
+  function toggleTooltip(e, centerName, companies) {
+    tooltipLock = true; // 클릭 시 툴팁 고정
+    buildTooltip(centerName, companies);
+    tooltip.style.display = "block";
+    tooltip.style.left = (e.pageX + 10) + "px";
+    tooltip.style.top = (e.pageY - 20) + "px";
+  }
+
+  function keepTooltip() {
+    tooltip.style.display = "block";
+  }
+
+  function hideTooltip() {
+    if (!tooltipLock) {
+      tooltip.style.display = "none";
+    }
+  }
+
+  function showDetails(companyName) {
+    const data = companyData[companyName];
+    if (data) {
+      details.innerHTML = `
+        <h3>${companyName}</h3>
+        <p>${data.desc}</p>
+        <p><strong>홈페이지:</strong> <a href="${data.url}" target="_blank">${data.url}</a></p>
+        <p><strong>연락처:</strong> ${data.contact}</p>
+      `;
+    }
+  }
+</script>
+
+</body>
+</html>
