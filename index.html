@@ -14,7 +14,7 @@
   }
   .marker {
     position: absolute;
-    width: 22px;
+    width: 22px;   /* 마커 크기 px 고정 */
     height: 22px;
     background: red;
     border-radius: 50%;
@@ -60,15 +60,15 @@
 <body>
 
 <div class="map-container">
-  <!-- 배경 그림 (네가 만든 그림 파일) -->
+  <!-- 배경 그림 -->
   <img src="daedeok_map.png" alt="대덕특구 센터 지도" style="max-width:100%;">
 
-  <!-- 센터 마커들 -->
-  <div class="marker" style="top:280px; left:210px; background:red;"
+  <!-- 센터 마커들 (좌표를 % 단위로 변경) -->
+  <div class="marker" style="top:38%; left:19%; background:red;"
        onmouseover="showTooltip(event, '사이언스센터', ['페리지','나라스페이스','두타기술'])"
        onclick="toggleTooltip(event, '사이언스센터', ['페리지','나라스페이스','두타기술'])"></div>
 
-  <div class="marker" style="top:300px; left:500px; background:blue;"
+  <div class="marker" style="top:42%; left:47%; background:blue;"
        onmouseover="showTooltip(event, '대덕테크비즈센터', ['네오스펙','비츠로'])"
        onclick="toggleTooltip(event, '대덕테크비즈센터', ['네오스펙','비츠로'])"></div>
 
@@ -88,10 +88,10 @@
   const tooltip = document.getElementById("tooltip");
   const details = document.getElementById("details");
 
-  // 샘플 기업 상세정보 데이터
+  // 기업 상세정보 데이터
   const companyData = {
     "페리지": { desc: "발사체 전문기업", url: "https://www.perigee.space", contact: "042-123-4567" },
-    "나라스페이스": { desc: "소형위성전문기업", url: "https://www.naraspace.com/ko", contact: "042-987-6543" },
+    "나라스페이스": { desc: "소형위성 전문기업", url: "https://www.naraspace.com/ko", contact: "042-987-6543" },
     "두타기술": { desc: "우주부품 제조업체", url: "https://www.duta-rnd.com", contact: "042-555-7777" },
     "네오스펙": { desc: "드론 센서 개발기업", url: "http://www.neospec.kr", contact: "02-111-2222" },
     "비츠로": { desc: "에너지 소재 기업", url: "http://www.vitzronextech.com", contact: "031-999-8888" }
